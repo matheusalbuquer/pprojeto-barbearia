@@ -1,70 +1,55 @@
 package com.triade.barbeariaSaas.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+
+
 
 @Entity
+@Table(name = "admin")
+@AllArgsConstructor
+@Getter
+@Setter
 public class Admin {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String nome;
 
     private String email;
 
-    private String senha;
+    @Column(name = "senha_hash", nullable = false, length = 100)
+    private String senhaHash; // <-- campo que combina com setSenhaHash
 
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "barbearia_id", nullable = false)
     private Barbearia barbearia;
 
-    public Admin(Long id, String nome, String email, String senha, Barbearia barbearia) {
+    @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Atendimentos> atendimentos = new ArrayList<>();
+
+    public Admin() {
+    }
+
+    public Admin(Long id, String nome, String email, String senhaHash, Barbearia barbearia) {
         this.id = id;
         this.nome = nome;
         this.email = email;
-        this.senha = senha;
+        this.senhaHash = senhaHash;
         this.barbearia = barbearia;
     }
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
-    public String getNome() {
-        return nome;
-    }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
-    public Barbearia getBarbearia() {
-        return barbearia;
-    }
-
-    public void setBarbearia(Barbearia barbearia) {
-        this.barbearia = barbearia;
-    }
 }
