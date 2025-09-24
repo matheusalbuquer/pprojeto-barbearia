@@ -3,6 +3,7 @@ package com.triade.barbeariaSaas.entities;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
@@ -16,6 +17,7 @@ import java.util.List;
 @Entity
 @Table(name = "admin")
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 public class Admin {
@@ -34,21 +36,6 @@ public class Admin {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "barbearia_id", nullable = false)
     private Barbearia barbearia;
-
-    @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Atendimentos> atendimentos = new ArrayList<>();
-
-    public Admin() {
-    }
-
-    public Admin(Long id, String nome, String email, String senhaHash, Barbearia barbearia) {
-        this.id = id;
-        this.nome = nome;
-        this.email = email;
-        this.senhaHash = senhaHash;
-        this.barbearia = barbearia;
-    }
-
 
 
 
